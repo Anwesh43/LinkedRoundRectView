@@ -93,4 +93,49 @@ class LRRRView (ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class LRRRNode(var i : Int, val state : State = State()) {
+
+        var next : LRRRNode? = null
+
+        var prev : LRRRNode? = null
+
+        init {
+            addNeighbor()
+        }
+
+        fun addNeighbor() {
+            if (i < nodes - 1) {
+                next = LRRRNode(i + 1)
+                next?.prev = this
+            }
+        }
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawRoundRectNode(i, state.scale, paint)
+            next?.draw(canvas, paint)
+        }
+
+        fun update(stopcb : (Int, Float) -> Unit) {
+            state.update {
+                stopcb(i, it)
+            }
+        }
+
+        fun startUpdating(startcb : () -> Unit) {
+            state.startUpdating(startcb)
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : LRRRNode {
+            var curr : LRRRNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr
+            }
+            cb()
+            return this
+        }
+    }
 }
