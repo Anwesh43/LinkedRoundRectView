@@ -22,7 +22,8 @@ fun Canvas.drawRoundRectNode(i : Int, scale : Float = 0f, paint : Paint) {
     paint.strokeCap = Paint.Cap.ROUND
     paint.color = Color.parseColor("#3D5AFE")
     val gap : Float = w / nodes
-    val hRect : Float = -gap/3
+    paint.style = Paint.Style.STROKE
+    val hRect : Float = gap/3
     save()
     translate(gap * i + gap, h/2)
     rotate(180f * scale)
