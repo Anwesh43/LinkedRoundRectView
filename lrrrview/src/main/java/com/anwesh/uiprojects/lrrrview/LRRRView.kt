@@ -4,6 +4,7 @@ package com.anwesh.uiprojects.lrrrview
  * Created by anweshmishra on 28/07/18.
  */
 
+import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.MotionEvent
@@ -185,6 +186,15 @@ class LRRRView (ctx : Context) : View(ctx) {
             lrrr.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+
+        fun create(activity : Activity) : LRRRView {
+            val view : LRRRView = LRRRView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
