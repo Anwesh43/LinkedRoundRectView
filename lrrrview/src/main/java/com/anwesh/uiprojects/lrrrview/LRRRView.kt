@@ -138,4 +138,28 @@ class LRRRView (ctx : Context) : View(ctx) {
             return this
         }
     }
+
+    data class LinkedRoundRect(var i : Int) {
+
+        var curr : LRRRNode = LRRRNode(0)
+
+        var dir : Int = 1
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            curr.draw(canvas, paint)
+        }
+
+        fun update(stopcb : (Int, Float) -> Unit) {
+            curr.update {i, it ->
+                curr = curr.getNext(dir) {
+                    dir *= -1
+                }
+                stopcb(i, it)
+            }
+        }
+
+        fun startUpdating(startcb : () -> Unit) {
+            curr.startUpdating(startcb)
+        }
+    }
 }
