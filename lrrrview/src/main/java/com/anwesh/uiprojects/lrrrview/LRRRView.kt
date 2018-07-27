@@ -8,10 +8,26 @@ import android.content.Context
 import android.view.View
 import android.view.MotionEvent
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 
 val nodes : Int = 5
+
+fun Canvas.drawRoundRectNode(i : Int, scale : Float = 0f, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    paint.strokeWidth = Math.min(w, h) / 50
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.color = Color.parseColor("#3D5AFE")
+    val gap : Float = w / nodes
+    val hRect : Float = -gap/3
+    save()
+    translate(gap * i + gap, h/2)
+    rotate(180f * scale)
+    drawRoundRect(RectF(-gap, -hRect / 2, 0f, hRect / 2), hRect/2, hRect/2, paint)
+    restore()
+}
 
 class LRRRView (ctx : Context) : View(ctx) {
 
