@@ -162,4 +162,27 @@ class LRRRView (ctx : Context) : View(ctx) {
             curr.startUpdating(startcb)
         }
     }
+
+    data class Renderer(var view : LRRRView) {
+
+        val lrrr : LinkedRoundRect = LinkedRoundRect(0)
+
+        val animator : Animator = Animator(view)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#BDBDBD"))
+            lrrr.draw(canvas, paint)
+            animator.animate {
+                lrrr.update {i, scale ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            lrrr.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
