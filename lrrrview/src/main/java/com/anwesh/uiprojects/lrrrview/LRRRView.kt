@@ -37,6 +37,12 @@ class LRRRView (ctx : Context) : View(ctx) {
 
     private val renderer : Renderer = Renderer(this)
 
+    var animationListener : AnimationListener? = null
+
+    fun addAnimationListener(onComplete : (Int) -> Unit, onReset : (Int)  -> Unit) {
+        animationListener = AnimationListener(onComplete, onReset)
+    }
+
     override fun onDraw(canvas : Canvas) {
         renderer.render(canvas, paint)
     }
@@ -179,6 +185,10 @@ class LRRRView (ctx : Context) : View(ctx) {
             animator.animate {
                 lrrr.update {i, scale ->
                     animator.stop()
+                    when(scale) {
+                        0f -> view.animationListener?.onReset?.invoke(i)
+                        1f -> view.animationListener?.onComplete?.invoke(i)
+                    }
                 }
             }
         }
@@ -198,4 +208,6 @@ class LRRRView (ctx : Context) : View(ctx) {
             return view
         }
     }
+
+    data class AnimationListener(var onComplete : (Int) -> Unit, var onReset : (Int) -> Unit)
 }
